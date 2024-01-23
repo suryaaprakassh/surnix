@@ -1,17 +1,29 @@
 import sys
+from Interpreter import Interpreter
 
 
 class Surnix:
     had_error = False
+    had_runtime_error = False
+    interpreter = Interpreter()
 
     @staticmethod
     def __run(source, reset=False):
         from Scanner import Scanner
+        from Parser import Parser
+        from AstPrinter import AstPrinter
         scanner = Scanner(source)
         if (reset):
             scanner.reset()
         tokens = scanner.scan_tokens()
-        print("tokens---->", tokens)
+        parser = Parser(tokens)
+
+        if (Surnix.had_error):
+            return sys.exit(65)
+        if (Surnix.had_runtime_error):
+            return sys.exit(70)
+        expression = parser.parse()
+        Surnix.interpreter.interpret(expression)
 
     @staticmethod
     def run_file(fileName):
@@ -32,7 +44,7 @@ class Surnix:
                 had_error = True
                 break
             Surnix.__run(line, True)
-            had_error = False
+            Surnix.had_error = False
 
     @staticmethod
     def error_token(token, message: str):
@@ -50,3 +62,8 @@ class Surnix:
     def report(line: int, where: str, message: str):
         print(f"[line {line}] Error {where}: {message}")
         Surnix.had_error = True
+
+    @staticmethod
+    def runtime_error(error):
+        print(f"{error.message}\n[line {error.token.line}]")
+        Surnix.had_runtime_error = True

@@ -99,7 +99,7 @@ class Scanner:
             self.__advance()
             while self.__peek().isdigit():
                 self.__advance()
-        self.__add_token(TokenType.NUMBER, float(
+        self.__add_token_literal(TokenType.NUMBER, float(
             self.source[Scanner.start:Scanner.current]))
 
     def __identifier(self):

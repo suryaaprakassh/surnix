@@ -1,0 +1,2 @@
+class Stmt:
+    pass

@@ -43,7 +43,7 @@ def define_ast(output_dir, base_name, types):
         fields = type.split(":")[1].strip()
         path = output_dir + "/" + class_name + ".py"
         with open(path, 'w') as f:
-            f.write("from Expr import Expr\n\n")
+            f.write(f"from {base_name} import {base_name}\n\n")
             f.write(f"class {class_name}({base_name}):\n")
             define_type(f, base_name, class_name, fields)
             f.write("\n\n")
@@ -56,11 +56,15 @@ def main():
         print("Usage: python GenerateAst.py <output directory>")
         return
     output_dir = args[1]
-    define_ast(output_dir, "Expr", [
-        "Binary   : Expr left, Token operator, Expr right",
-        "Grouping : Expr expression",
-        "Literal  : object value",
-        "Unary    : Token operator, Expr right"
+    # define_ast(output_dir, "Expr", [
+    #     "Binary   : Expr left, Token operator, Expr right",
+    #     "Grouping : Expr expression",
+    #     "Literal  : object value",
+    #     "Unary    : Token operator, Expr right"
+    # ])
+    define_ast(output_dir, "Stmt", [
+        "Expression : Expr expression",
+        "Print : Expr expression"
     ])
 
 

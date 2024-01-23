@@ -8,22 +8,20 @@ class Surnix:
     interpreter = Interpreter()
 
     @staticmethod
-    def __run(source, reset=False):
+    def __run(source):
         from Scanner import Scanner
         from Parser import Parser
         from AstPrinter import AstPrinter
         scanner = Scanner(source)
-        if (reset):
-            scanner.reset()
+        scanner.reset()
         tokens = scanner.scan_tokens()
         parser = Parser(tokens)
-
         if (Surnix.had_error):
             return sys.exit(65)
         if (Surnix.had_runtime_error):
             return sys.exit(70)
-        expression = parser.parse()
-        Surnix.interpreter.interpret(expression)
+        statements = parser.parse()
+        Surnix.interpreter.interpret(statements)
 
     @staticmethod
     def run_file(fileName):
@@ -43,7 +41,7 @@ class Surnix:
             if not line or line == "":
                 had_error = True
                 break
-            Surnix.__run(line, True)
+            Surnix.__run(line)
             Surnix.had_error = False
 
     @staticmethod

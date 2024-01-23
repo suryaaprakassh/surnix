@@ -91,9 +91,19 @@ class Interpreter(Visitor):
             return text
         return str(obj)
 
-    def interpret(self, expr):
+    def interpret(self, statements):
+        from Surnix import Surnix
         try:
-            value = self.__evaluate(expr)
-            print(self.__stringify(value))
+            for statement in statements:
+                self.__evaluate(statement)
         except RuntimeError as e:
-            print(e)
+            Surnix.runtime_error(e)
+
+    def visit_Expression(self, statement):
+        self.__evaluate(statement.expression)
+        return None
+
+    def visit_Print(self, expr):
+        value = self.__evaluate(expr.expression)
+        print(value)
+        return None

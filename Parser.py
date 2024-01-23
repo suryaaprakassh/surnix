@@ -2,6 +2,8 @@ from TokenType import TokenType
 from Binary import Binary
 from Unary import Unary
 from Literal import Literal
+from Print import Print
+from Expression import Expression
 
 
 class Parser:
@@ -119,8 +121,25 @@ class Parser:
     def __expression(self):
         return self.__equality()
 
+    def __printStatement(self):
+        value = self.__expression()
+        self.__consume(TokenType.SEMICOLON, "Expect ';' after value")
+        return Print(value)
+
+    def __expressionStatement(self):
+        value = self.__expression()
+        self.__consume(TokenType.SEMICOLON, "Expect ';' after value")
+        return Expression(value)
+
+    def __statement(self):
+        if (self.__match(TokenType.PRINT)):
+            return self.__printStatement()
+
+        return self.__expressionStatement()
+
     def parse(self):
-        try:
-            return self.__expression()
-        except Exception as e:
-            return None
+        statements = []
+        while (not self.__isAtEnd()):
+            statements.append(self.__statement())
+
+        return statements

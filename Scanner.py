@@ -90,7 +90,7 @@ class Scanner:
     def __peek_next(self):
         if Scanner.current+1 >= len(self.source):
             return '\0'
-        return Scanner.source[Scanner.current+1]
+        return self.source[Scanner.current+1]
 
     def __number(self):
         while not self.__is_at_end() and self.__peek().isdigit():
@@ -133,12 +133,6 @@ class Scanner:
                         self.__advance()
                 else:
                     self.__add_token(TokenType.SLASH)
-            case ' ':
-                pass
-            case '\r':
-                pass
-            case '\t':
-                pass
             case '"':
                 self.__string()
             case default:
@@ -146,6 +140,6 @@ class Scanner:
                     self.__identifier()
                 elif default.isdigit():
                     self.__number()
-                else:
-                    print("Error====>", default)
+                elif not default.isspace():
+                    print(f"Error====>{default}<========")
                     Surnix.error(Scanner.line, "Unexpected character.")

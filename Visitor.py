@@ -17,3 +17,15 @@ class Visitor(ABC):
     @abstractmethod
     def visit_Unary(self, expr):
         pass
+
+    @abstractmethod
+    def visit_Expression(self, expr):
+        pass
+
+    @abstractmethod
+    def visit_Expression(self, expr):
+        pass
+
+    @abstractmethod
+    def visit_Print(self, expr):
+        pass

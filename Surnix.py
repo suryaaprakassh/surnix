@@ -63,5 +63,6 @@ class Surnix:
 
     @staticmethod
     def runtime_error(error):
-        print(f"{error.message}\n[line {error.token.line}]")
+        # print(f"Runtime Error: [line {.token.line}]")
+        print("Runtime Error: Unknown")
         Surnix.had_runtime_error = True

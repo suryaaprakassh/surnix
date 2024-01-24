@@ -1,4 +1,3 @@
-print "one";
-print 1+1;
-print 3.14;
-print true;
+var a=1;
+var b=2;
+print a+b;

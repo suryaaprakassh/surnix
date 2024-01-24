@@ -1,5 +1,3 @@
-from Token import Token
-
 from Expr import Expr
 
 class Grouping(Expr):

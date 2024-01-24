@@ -1,8 +1,12 @@
 from Visitor import Visitor
 from Token import TokenType
+from Environment import Environment
 
 
 class Interpreter(Visitor):
+
+    environment = Environment()
+
     def visit_Literal(self, expr):
         return expr.value
 
@@ -107,3 +111,13 @@ class Interpreter(Visitor):
         value = self.__evaluate(expr.expression)
         print(value)
         return None
+
+    def visit_Var(self, statement):
+        value = None
+        if statement.initializer:
+            value = self.__evaluate(statement.initializer)
+        Interpreter.environment.define(statement.name, value)
+        return None
+
+    def visit_Variable(self, expr):
+        return Interpreter.environment.get(expr.name)

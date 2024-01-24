@@ -27,7 +27,7 @@ def define_visitor(types,  output_dir):
         f.write("from abc import abstractmethod\n")
         for type in types:
             class_name = type.split(":")[0].strip()
-            f.write(f"from {class_name} import {class_name}\n")
+            # f.write(f"from {class_name} import {class_name}\n")
         f.write("\n\n")
         f.write("class Visitor:\n")
         for type in types:
@@ -56,15 +56,17 @@ def main():
         print("Usage: python GenerateAst.py <output directory>")
         return
     output_dir = args[1]
-    # define_ast(output_dir, "Expr", [
-    #     "Binary   : Expr left, Token operator, Expr right",
-    #     "Grouping : Expr expression",
-    #     "Literal  : object value",
-    #     "Unary    : Token operator, Expr right"
-    # ])
+    define_ast(output_dir, "Expr", [
+        "Binary   : Expr left, Token operator, Expr right",
+        "Grouping : Expr expression",
+        "Literal  : object value",
+        "Unary    : Token operator, Expr right",
+        "Variable : Token name"
+    ])
     define_ast(output_dir, "Stmt", [
         "Expression : Expr expression",
-        "Print : Expr expression"
+        "Print : Expr expression",
+        "Var : Token name, Expr initializer"
     ])
 
 

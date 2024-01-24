@@ -4,6 +4,8 @@ from Unary import Unary
 from Literal import Literal
 from Print import Print
 from Expression import Expression
+from Var import Var
+from Variable import Variable
 
 
 class Parser:
@@ -116,6 +118,8 @@ class Parser:
             self.__consume(TokenType.RIGHT_PAREN,
                            "Expect ')' after expression.")
             return expr
+        if (self.__match(TokenType.IDENTIFIER)):
+            return Variable(self.__previous())
         raise self.__error(self.__peek(), "Expect expression.")
 
     def __expression(self):
@@ -137,9 +141,29 @@ class Parser:
 
         return self.__expressionStatement()
 
+    def __varDeclaration(self):
+        name = self.__consume(TokenType.IDENTIFIER, "Expect Variable Name")
+        initializer = None
+        if (self.__match(TokenType.EQUAL)):
+            initializer = self.__expression()
+
+        self.__consume(TokenType.SEMICOLON,
+                       "Expect ';' after variable declaration")
+
+        return Var(name, initializer)
+
+    def __declaration(self):
+        try:
+            if (self.__match(TokenType.VAR)):
+                return self.__varDeclaration()
+            return self.__statement()
+        except:
+            self.__synchronize()
+            return None
+
     def parse(self):
         statements = []
         while (not self.__isAtEnd()):
-            statements.append(self.__statement())
+            statements.append(self.__declaration())
 
         return statements

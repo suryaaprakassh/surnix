@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod, ABC
 
 
 class Visitor(ABC):
@@ -19,7 +19,7 @@ class Visitor(ABC):
         pass
 
     @abstractmethod
-    def visit_Expression(self, expr):
+    def visit_Variable(self, expr):
         pass
 
     @abstractmethod
@@ -28,4 +28,8 @@ class Visitor(ABC):
 
     @abstractmethod
     def visit_Print(self, expr):
+        pass
+
+    @abstractmethod
+    def visit_Var(self, expr):
         pass

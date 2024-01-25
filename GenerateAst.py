@@ -57,6 +57,7 @@ def main():
         return
     output_dir = args[1]
     define_ast(output_dir, "Expr", [
+        "Assign   : Token name, Expr value",
         "Binary   : Expr left, Token operator, Expr right",
         "Grouping : Expr expression",
         "Literal  : object value",
@@ -66,7 +67,8 @@ def main():
     define_ast(output_dir, "Stmt", [
         "Expression : Expr expression",
         "Print : Expr expression",
-        "Var : Token name, Expr initializer"
+        "Var : Token name, Expr initializer",
+        "Block : List statements"
     ])
 
 

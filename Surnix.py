@@ -27,10 +27,11 @@ class Surnix:
     def run_file(fileName):
         try:
             with open(fileName, 'r') as f:
-                for line in f:
-                    Surnix.__run(line)
-                    if (Surnix.had_error):
-                        sys.exit(65)
+                # for line in f:
+                #     Surnix.__run(line)
+                #     if (Surnix.had_error):
+                #         sys.exit(65)
+                Surnix.__run("".join(f.readlines()))
         except FileNotFoundError:
             print(f"File {fileName} not found")
 

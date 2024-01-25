@@ -6,6 +6,8 @@ from Print import Print
 from Expression import Expression
 from Var import Var
 from Variable import Variable
+from Block import Block
+from Assign import Assign
 
 
 class Parser:
@@ -104,6 +106,13 @@ class Parser:
 
             self.__advance()
 
+    def __block(self):
+        statements = list()
+        while (not self.__check(TokenType.RIGHT_BRACE) and not self.__isAtEnd()):
+            statements.append(self.__declaration())
+        self.__consume(TokenType.RIGHT_BRACE, "Expect '}' after block.")
+        return statements
+
     def __primary(self):
         if (self.__match(TokenType.FALSE)):
             return Literal(False)
@@ -122,8 +131,22 @@ class Parser:
             return Variable(self.__previous())
         raise self.__error(self.__peek(), "Expect expression.")
 
+    def __assignment(self):
+        expr = self.__equality()
+
+        if (self.__match(TokenType.EQUAL)):
+            equals = self.__previous()
+            value = self.__assignment()
+            if (isinstance(expr, Variable)):
+                name = expr.name
+                return Assign(name, value)
+
+            self.__error(equals, "Invalid assignment target.")
+
+        return expr
+
     def __expression(self):
-        return self.__equality()
+        return self.__assignment()
 
     def __printStatement(self):
         value = self.__expression()
@@ -138,7 +161,8 @@ class Parser:
     def __statement(self):
         if (self.__match(TokenType.PRINT)):
             return self.__printStatement()
-
+        if (self.__match(TokenType.LEFT_BRACE)):
+            return Block(self.__block())
         return self.__expressionStatement()
 
     def __varDeclaration(self):

@@ -1,10 +1,10 @@
-from dataclasses import dataclass, field
 from typing import Dict, Any
 
 
-@dataclass
 class Environment:
-    values: Dict[str, Any] = field(default_factory=dict)
+    def __init__(self, enclosing=None) -> None:
+        self.values: Dict[str, Any] = dict()
+        self.enclosing = enclosing
 
     def define(self, name: str, value: object):
         self.values[name.lexeme] = value
@@ -12,4 +12,13 @@ class Environment:
     def get(self, name):
         if name.lexeme in self.values:
             return self.values[name.lexeme]
+        if self.enclosing:
+            return self.enclosing.get(name)
         raise RuntimeError(name, f"Undefined Variable {name.lexeme} .")
+
+    def assign(self, name, value):
+        if name.lexeme in self.values:
+            self.values[name.lexeme] = value
+            return
+
+        raise Exception(f"Undefined variable {name.lexeme}.")

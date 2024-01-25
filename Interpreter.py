@@ -45,6 +45,15 @@ class Interpreter(Visitor):
             return False
         return a == b
 
+    def __execute_block(self, statements, environment):
+        previous = Interpreter.environment
+        try:
+            Interpreter.environment = environment
+            for statement in statements:
+                self.__evaluate(statement)
+        finally:
+            Interpreter.environment = previous
+
     def visit_Binary(self, expr):
         left = self.__evaluate(expr.left)
         right = self.__evaluate(expr.right)
@@ -109,7 +118,7 @@ class Interpreter(Visitor):
 
     def visit_Print(self, expr):
         value = self.__evaluate(expr.expression)
-        print(value)
+        print(self.__stringify(value))
         return None
 
     def visit_Var(self, statement):
@@ -121,3 +130,15 @@ class Interpreter(Visitor):
 
     def visit_Variable(self, expr):
         return Interpreter.environment.get(expr.name)
+
+    def visit_Block(self, expr):
+        self.__execute_block(
+            expr.statements, Environment(Interpreter.environment))
+        return None
+
+    def visit_Assign(self, expr):
+        value = self.__evaluate(expr.value)
+
+        Interpreter.environment.assign(expr.name, value)
+
+        return value

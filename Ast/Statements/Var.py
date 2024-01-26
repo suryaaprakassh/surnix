@@ -1,4 +1,4 @@
-from Stmt import Stmt
+from Ast.Statements.Stmt import Stmt
 
 class Var(Stmt):
     def __init__(self, name, initializer, ):

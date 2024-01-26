@@ -1,11 +1,11 @@
-from Stmt import Stmt
+from Ast.Statements.Stmt import Stmt
 
-class Expression(Stmt):
+class Print(Stmt):
     def __init__(self, expression, ):
         self.expression = expression
 
 
     def accept(self, visitor):
-        return visitor.visit_Expression(self)
+        return visitor.visit_Print(self)
 
 

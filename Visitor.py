@@ -1,10 +1,11 @@
 from abc import abstractmethod
 from abc import abstractmethod, ABC
+from typing import Any
 
 
 class Visitor(ABC):
     @abstractmethod
-    def visit_Binary(self, expr):
+    def visit_Binary(self, expr)->Any:
         pass
 
     @abstractmethod
@@ -12,11 +13,11 @@ class Visitor(ABC):
         pass
 
     @abstractmethod
-    def visit_Literal(self, expr):
+    def visit_Literal(self, expr)-> str:
         pass
 
     @abstractmethod
-    def visit_Unary(self, expr):
+    def visit_Unary(self, expr)->Any:
         pass
 
     @abstractmethod
@@ -41,4 +42,8 @@ class Visitor(ABC):
 
     @abstractmethod
     def visit_Assign(self, expr):
+        pass
+
+    @abstractmethod
+    def visit_If(self, expr):
         pass

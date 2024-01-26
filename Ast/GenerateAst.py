@@ -68,7 +68,8 @@ def main():
         "Expression : Expr expression",
         "Print : Expr expression",
         "Var : Token name, Expr initializer",
-        "Block : List statements"
+        "Block : List statements",
+        "If : Expr condition , Stmt thenBranch , Stmt expression"
     ])
 
 

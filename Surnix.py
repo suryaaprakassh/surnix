@@ -11,7 +11,6 @@ class Surnix:
     def __run(source):
         from Scanner import Scanner
         from Parser import Parser
-        from AstPrinter import AstPrinter
         scanner = Scanner(source)
         scanner.reset()
         tokens = scanner.scan_tokens()

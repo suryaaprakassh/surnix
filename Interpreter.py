@@ -112,8 +112,8 @@ class Interpreter(Visitor):
         except RuntimeError as e:
             Surnix.runtime_error(e)
 
-    def visit_Expression(self, statement):
-        self.__evaluate(statement.expression)
+    def visit_Expression(self, expr):
+        self.__evaluate(expr.expression)
         return None
 
     def visit_Print(self, expr):
@@ -121,11 +121,11 @@ class Interpreter(Visitor):
         print(self.__stringify(value))
         return None
 
-    def visit_Var(self, statement):
+    def visit_Var(self, expr):
         value = None
-        if statement.initializer:
-            value = self.__evaluate(statement.initializer)
-        Interpreter.environment.define(statement.name, value)
+        if expr.initializer:
+            value = self.__evaluate(expr.initializer)
+        Interpreter.environment.define(expr.name, value)
         return None
 
     def visit_Variable(self, expr):
@@ -142,3 +142,10 @@ class Interpreter(Visitor):
         Interpreter.environment.assign(expr.name, value)
 
         return value
+
+    def visit_If(self, expr):
+        if (self.__is_truthy(self.__evaluate(expr.condition))):
+            self.__evaluate(expr.thenBranch)
+        elif (expr.elseBranch):
+            self.__evaluate(expr.elseBranch)
+        return None

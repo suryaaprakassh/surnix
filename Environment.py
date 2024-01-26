@@ -6,7 +6,7 @@ class Environment:
         self.values: Dict[str, Any] = dict()
         self.enclosing = enclosing
 
-    def define(self, name: str, value: object):
+    def define(self, name, value: object):
         self.values[name.lexeme] = value
 
     def get(self, name):

@@ -1,13 +1,14 @@
 from TokenType import TokenType
-from Binary import Binary
-from Unary import Unary
-from Literal import Literal
-from Print import Print
-from Expression import Expression
-from Var import Var
-from Variable import Variable
-from Block import Block
-from Assign import Assign
+from Ast.Expressions.Binary import Binary
+from Ast.Expressions.Unary import Unary
+from Ast.Expressions.Literal import Literal
+from Ast.Statements.Print import Print
+from Ast.Statements.Expression import Expression
+from Ast.Statements.Var import Var
+from Ast.Expressions.Variable import Variable
+from Ast.Statements.Block import Block
+from Ast.Expressions.Assign import Assign
+from Ast.Statements.If import If
 
 
 class Parser:
@@ -158,7 +159,20 @@ class Parser:
         self.__consume(TokenType.SEMICOLON, "Expect ';' after value")
         return Expression(value)
 
+    def __ifStatement(self):
+        self.__consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'")
+        condition = self.__expression()
+        self.__consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.")
+        thenBranch = self.__statement()
+        elseBranch = None
+        if (self.__match(TokenType.ELSE)):
+            elseBranch = self.__statement()
+        obj = If(condition, thenBranch, elseBranch)
+        return obj
+
     def __statement(self):
+        if (self.__match(TokenType.IF)):
+            return self.__ifStatement()
         if (self.__match(TokenType.PRINT)):
             return self.__printStatement()
         if (self.__match(TokenType.LEFT_BRACE)):

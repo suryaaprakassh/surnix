@@ -2,7 +2,6 @@ from Visitor import Visitor
 
 
 class AstPrinter(Visitor):
-
     def parenthesize(self, name, *exprs):
         return_string = "(" + name + " "
 
@@ -33,10 +32,10 @@ class AstPrinter(Visitor):
 if __name__ == "__main__":
     from Token import Token
     from TokenType import TokenType
-    from Unary import Unary
-    from Literal import Literal
-    from Grouping import Grouping
-    from Binary import Binary
+    from Ast.Expressions.Unary import Unary
+    from Ast.Expressions.Literal import Literal
+    from Ast.Expressions.Grouping import Grouping
+    from Ast.Expressions.Binary import Binary
 
     expr = Binary(
         Unary(

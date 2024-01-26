@@ -1,11 +1,11 @@
-from Expr import Expr
+from Ast.Statements.Stmt import Stmt
 
-class Grouping(Expr):
+class Expression(Stmt):
     def __init__(self, expression, ):
         self.expression = expression
 
 
     def accept(self, visitor):
-        return visitor.visit_Grouping(self)
+        return visitor.visit_Expression(self)
 
 

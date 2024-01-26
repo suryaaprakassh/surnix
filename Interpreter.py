@@ -149,3 +149,14 @@ class Interpreter(Visitor):
         elif (expr.elseBranch):
             self.__evaluate(expr.elseBranch)
         return None
+    
+    def visit_Logical(self,expr):
+        left= self.__evaluate(expr.left)  
+        if(expr.operator.type==TokenType.OR):
+            if(self.__is_truthy(left)):
+                return left;
+        else:
+            if(not self.__is_truthy(left)):
+                return left
+            
+        return self.__evaluate(expr.right)

@@ -1,6 +1,2 @@
-if(1==1){
-    print "works";
-}
-else{
-    print "not works";
-}
+print "hi" or 2;
+print nil or "yes";

@@ -9,6 +9,7 @@ from Ast.Expressions.Variable import Variable
 from Ast.Statements.Block import Block
 from Ast.Expressions.Assign import Assign
 from Ast.Statements.If import If
+from Ast.Expressions.Logical import Logical
 
 
 class Parser:
@@ -131,9 +132,22 @@ class Parser:
         if (self.__match(TokenType.IDENTIFIER)):
             return Variable(self.__previous())
         raise self.__error(self.__peek(), "Expect expression.")
-
+    def __and(self):
+        expr= self.__equality()
+        while(self.__match(TokenType.AND)):
+            operator=self.__previous()
+            right=self.__equality()
+            expr=Logical(expr,operator,right)
+        return expr
+    def __or(self):
+        expr = self.__and()
+        while(self.__match(TokenType.OR)):
+            operator=self.__previous()
+            right=self.__and()
+            expr = Logical(expr,operator,right)
+        return expr
     def __assignment(self):
-        expr = self.__equality()
+        expr = self.__or()
 
         if (self.__match(TokenType.EQUAL)):
             equals = self.__previous()

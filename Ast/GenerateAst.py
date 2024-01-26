@@ -1,5 +1,3 @@
-import sys
-
 
 def format_types(types):
     return_string = ""
@@ -47,16 +45,16 @@ def define_ast(output_dir, base_name, types):
             f.write(f"class {class_name}({base_name}):\n")
             define_type(f, base_name, class_name, fields)
             f.write("\n\n")
-    define_visitor(types,  output_dir)
+    define_visitor(types,  "..")
 
 
 def main():
-    args = sys.argv
-    if (len(args) != 2):
-        print("Usage: python GenerateAst.py <output directory>")
-        return
-    output_dir = args[1]
-    define_ast(output_dir, "Expr", [
+    # args = sys.argv
+    # if (len(args) != 2):
+    #     print("Usage: python GenerateAst.py <output directory>")
+    #     return
+    # output_dir = args[1]
+    define_ast("./Ast/Expression", "Expr", [
         "Assign   : Token name, Expr value",
         "Binary   : Expr left, Token operator, Expr right",
         "Grouping : Expr expression",
@@ -64,7 +62,7 @@ def main():
         "Unary    : Token operator, Expr right",
         "Variable : Token name"
     ])
-    define_ast(output_dir, "Stmt", [
+    define_ast("./Ast/Statements", "Stmt", [
         "Expression : Expr expression",
         "Print : Expr expression",
         "Var : Token name, Expr initializer",

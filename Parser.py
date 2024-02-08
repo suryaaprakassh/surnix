@@ -192,8 +192,39 @@ class Parser:
         self.__consume(TokenType.RIGHT_PAREN,"Expect ')' after 'while'.")
         body=self.__statement()
         return While(condition,body)
+    
+    def __forStatement(self):
+        self.__consume(TokenType.LEFT_PAREN,"Expect '(' after 'while'.")
+        initializer=None;
+        if(self.__match(TokenType.VAR)):
+            initializer=self.__varDeclaration();
+        else:
+            initializer=self.__expressionStatement()
+        condition=None;
+        if(not self.__match(TokenType.SEMICOLON)):
+            condition=self.__expression() 
+        self.__consume(TokenType.SEMICOLON,"Expect ';' after loop condition.");
+        incerment=None
+        if(not self.__check(TokenType.RIGHT_PAREN)):
+            incerment=self.__expression()
+        self.__consume(TokenType.RIGHT_PAREN,"Expect ')' after 'while'.")
+
+        body=self.__statement()
+        if(incerment):
+            body=Block([body,Expression(incerment)])
+
+        if(not condition):
+            condition=Literal(True)
+        body=While(condition,body);
+        
+        if(initializer):
+            body= Block([initializer,body])
+        
+        return body;
 
     def __statement(self):
+        if(self.__match(TokenType.FOR)):
+            return self.__forStatement()
         if (self.__match(TokenType.IF)):
             return self.__ifStatement()
         if (self.__match(TokenType.PRINT)):

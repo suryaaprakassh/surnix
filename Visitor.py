@@ -51,3 +51,6 @@ class Visitor(ABC):
     @abstractmethod
     def visit_Logical(self,expr):
         pass
+    @abstractmethod
+    def visit_While(self,expr):
+        pass

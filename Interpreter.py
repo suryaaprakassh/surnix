@@ -57,7 +57,7 @@ class Interpreter(Visitor):
     def visit_Binary(self, expr):
         left = self.__evaluate(expr.left)
         right = self.__evaluate(expr.right)
-
+        right = self.__evaluate(expr.right)
         match expr.operator.type:
             case TokenType.MINUS:
                 self.__check_number_operand(expr.operator, left, right)
@@ -160,3 +160,7 @@ class Interpreter(Visitor):
                 return left
             
         return self.__evaluate(expr.right)
+    def visit_While(self,expr):
+        while(self.__is_truthy(self.__evaluate(expr.condition))):
+            self.__evaluate(expr.body)
+        return None

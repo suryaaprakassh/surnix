@@ -20,5 +20,7 @@ class Environment:
         if name.lexeme in self.values:
             self.values[name.lexeme] = value
             return
-
+        if self.enclosing:
+            self.enclosing.assign(name,value) 
+            return 
         raise Exception(f"Undefined variable {name.lexeme}.")

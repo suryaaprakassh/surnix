@@ -1,3 +1,4 @@
+from Ast.Statements.While import While
 from TokenType import TokenType
 from Ast.Expressions.Binary import Binary
 from Ast.Expressions.Unary import Unary
@@ -110,6 +111,7 @@ class Parser:
 
     def __block(self):
         statements = list()
+        
         while (not self.__check(TokenType.RIGHT_BRACE) and not self.__isAtEnd()):
             statements.append(self.__declaration())
         self.__consume(TokenType.RIGHT_BRACE, "Expect '}' after block.")
@@ -184,11 +186,20 @@ class Parser:
         obj = If(condition, thenBranch, elseBranch)
         return obj
 
+    def __whileStatement(self):
+        self.__consume(TokenType.LEFT_PAREN,"Expect '(' after 'while'.")
+        condition=self.__expression() 
+        self.__consume(TokenType.RIGHT_PAREN,"Expect ')' after 'while'.")
+        body=self.__statement()
+        return While(condition,body)
+
     def __statement(self):
         if (self.__match(TokenType.IF)):
             return self.__ifStatement()
         if (self.__match(TokenType.PRINT)):
             return self.__printStatement()
+        if(self.__match(TokenType.WHILE)):
+            return self.__whileStatement()
         if (self.__match(TokenType.LEFT_BRACE)):
             return Block(self.__block())
         return self.__expressionStatement()
